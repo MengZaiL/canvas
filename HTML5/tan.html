@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #999999;}
+    </style>
+</head>
+<body>
+   <canvas width="400" height="400" id="can">
+  </canvas>
+</body>
+<script>
+    window.onload = function()
+    {
+        var can = document.getElementById('can');
+        var Obj = can.getContext('2d');
+        
+        Obj.lineWidth = 5;
+        Obj.strokeStyle = "#ff0000";
+        Obj.moveTo(250,300);
+        Obj.lineTo(250,250);
+        
+        can.onmousemove = function(e){
+            var mx = e.layerX;
+            var my = e.layerY;
+            var strX = 250;
+            var strY = 300;
+            var angle = Math.atan2((my-strY),(mx-strX));
+            Obj.clearRect(0,0,400,400);
+            Obj.beginPath();
+            Obj.moveTo(strX,strY);
+            Obj.lineTo(strX+50*Math.cos(angle),strY+50*Math.sin(angle));
+            Obj.stroke();
+        }
+    }
+</script>
+</html>

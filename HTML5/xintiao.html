@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #999999;}
+    </style>
+</head>
+<body>
+   <canvas width="400" height="400" id="can">
+  </canvas>
+</body>
+<script>
+    window.onload = function()
+    {
+         var can = document.getElementById('can');
+         var Obj = can.getContext('2d');
+         Obj.arc(200,200,50,0,2*Math.PI);
+         Obj.stroke();
+         var angle =0; 
+         can.onclick = function(e)
+         {
+             var X = e.layerX;
+             var Y = e.layerY;
+             if(Obj.isPointInPath(X,Y))
+             {
+                 setInterval(function(){
+                     angle+=0.1;
+                     Obj.clearRect(0,0,400,400);
+                     Obj.beginPath();
+                     Obj.arc(200,200,50+10*Math.sin(angle),0,2*Math.PI)
+                     Obj.stroke();
+                 },50)
+             }
+         }
+    }
+</script>
+</html>

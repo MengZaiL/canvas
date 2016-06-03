@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #999999;}
+    </style>
+</head>
+<body>
+   <canvas width="400" height="400" id="can">
+  </canvas>
+</body>
+<script>
+    (function(){
+        var can = document.getElementById('can');
+        var Obj = can.getContext('2d');
+        
+        can.onmousedown = function(e)
+        {
+            var startX = e.layerX;
+            var startY = e.layerY;
+            
+            can.onmouseup = function(e)
+            {
+                var endX = e.layerX;
+                var endY = e.layerY;
+                can.onmousemove = function(e)
+                {
+                    var conX = e.layerX;
+                    var conY = e.layerY;
+                    Obj.clearRect(0,0,400,400);
+                    Obj.beginPath();
+                    Obj.moveTo(startX,startY);
+                    Obj.quadraticCurveTo(conX,conY,endX,endY);
+                    Obj.stroke();
+                }
+            }
+        }
+    })()
+</script>
+</html>

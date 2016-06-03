@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #999999;}
+    </style>
+</head>
+<body>
+  <canvas width="400" height="400" id="canvas">
+      你的浏览器OUT了
+  </canvas>
+    
+  <canvas width="400" height="400" id="can">
+      你的浏览器OUT了
+  </canvas>
+    <script>
+        /*(function canvas(){
+           var canvas = document.getElementById('canvas');
+           var canObj = canvas.getContext('2d');
+          
+            canObj.shadowColor = 'rgb(11,25,9)';
+            canObj.shadowOffsetX = 3;
+            canObj.shadowOffsetY = 3;
+            canObj.shadowBlur = 5;
+          canObj.rect(0,0,100,100)
+          canObj.fillStyle='#FF0000';
+          canObj.fillRect(100,100,100,100);
+        })()*/
+        
+        
+        
+        (function can(){
+            var can = document.getElementById('can');
+            var Obj = can.getContext('2d');
+            /*Obj.moveTo(0,0);
+            Obj.lineTo(100,100);
+            Obj.lineTo(200,100);
+            Obj.strokeStyle = '#FF0000';
+            Obj.stroke();
+            Obj.beginPath();
+            Obj.lineTo(300,100);
+            Obj.lineTo(400,200);
+            Obj.lineTo(100,400);
+            Obj.strokeStyle = '#000000';
+            Obj.closePath();  //关闭头尾相连
+            Obj.stroke();*/
+            
+            can.onmousedown = function(e)
+            {
+                var mx = e.layerX;
+                var my = e.layerY;
+                Obj.moveTo(mx,my);
+                can.onmousemove = function(e)
+                {
+                    var endx = e.layerX;
+                    var endy = e.layerY;
+                    Obj.lineTo(endx,endy);
+                    Obj.stroke();
+                }
+                
+                 can.onmouseup = function()
+                {
+                    this.onmousemove = null;
+                    this.onmouseup = null;
+                }
+            
+                
+            }
+            
+            
+        })()
+        
+        
+        
+        
+        /*作用域问题var a =1;
+                    
+        function Fun()
+        {
+            console.log(a);
+            a =2;
+            function inFun(){
+                console.log(a);
+            }
+            inFun();
+        }
+        
+        Fun();
+        
+        
+        function B(){
+             a =0;
+            return function(){
+                console.log(++a);
+            }
+        }
+        var FF = new B();
+        FF();
+        FF();*/
+        
+    </script> 
+</body>
+</html>

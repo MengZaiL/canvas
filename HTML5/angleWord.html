@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #eee; position: absolute; left: 50%; top: 50%; margin: -200px 0 0 -200px;}
+    </style>
+</head>
+<body>
+   <canvas width="500" height="500" id="canvas"></canvas>
+</body>
+<script>
+    
+    var can = document.getElementById('canvas');
+    var Obj = can.getContext('2d');
+    Obj.translate(250,250)
+    var angleWord = function()
+    {
+        this.num = 45*Math.PI/180;   //这是弧度画圆用的;
+        this.angle = 0;
+        this.colorArr = [];
+        for(var i=0;i<8;i++)
+        {
+              var rect={angle:0,num:150,scales:1,color:"rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"};
+        this.colorArr.push(rect); 
+        }
+        
+        this.step = 10+100*Math.random();
+    }
+   
+    angleWord.prototype.drawCircle = function(an)
+    {
+        //每次清楚画布
+        
+        var that = this;
+        Obj.clearRect(-200,-200,500,500);
+        
+        Obj.save()
+        var num2  = Math.ceil(an/45)
+        //console.log(num2)
+        Obj.rotate(an*this.num/45)
+        
+        for(var i=0;i<8;i++)  //开始画八个扇形
+        {
+            Obj.beginPath();
+            Obj.moveTo(0,0);
+           // Obj.fillStyle = "rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"
+            Obj.fillStyle = that.colorArr[i].color
+            Obj.arc(0,0,130,i*this.num,(i+1)*this.num);
+            Obj.closePath();
+           
+            Obj.fill();
+        }
+        
+        Obj.beginPath();   //画中间的一个白色的圆形
+        Obj.fillStyle = "#fff";
+        Obj.arc(0,0,60,0,2*Math.PI);
+        Obj.fill();
+        
+        //写中间的文字试试
+        /*Obj.beginPath();
+        Obj.fillStyle = "#222";
+        Obj.font = '15px 微软雅黑';
+        Obj.fillText(text,0,0)
+        Obj.textAlign = 'center';
+        Obj.textBaseline = 'middle';*/
+        
+        //给没个添加文字
+        for(var i=0;i<8;i++)
+        {
+            Obj.save();
+            Obj.beginPath();
+            Obj.rotate((i*45+25)*this.num/45)
+            Obj.fillStyle = "#222";
+            Obj.font = '13px 微软雅黑';
+            Obj.fillText(i,90,0)
+            Obj.restore();
+        }
+        
+        
+       Obj.restore();
+          //写个指针？
+        Obj.beginPath()
+        Obj.moveTo(135, 0)
+        Obj.lineWidth = 5;
+        Obj.lineTo(160,0)
+        Obj.stroke();
+     }
+    
+      angleWord.prototype.Click = function()
+      {
+          var that = this;
+          var t =setInterval(function(){
+              if(that.step <= 0.1)
+              {
+                  clearInterval(t)
+                  var num2 = Math.ceil(that.angle/45)
+                  var text  = 8 - num2;
+                    //写中间的文字试试
+                    Obj.beginPath();
+                    Obj.fillStyle = "#222";
+                    Obj.font = '15px 微软雅黑';
+                   Obj.textAlign = 'center';
+                    Obj.textBaseline = 'middle';
+                    Obj.fillText(text,0,0)
+              }else{
+                  if(that.angle>=360)
+                  {
+                      that.angle = 0;
+                  }
+                  that.step*=0.95;
+                  that.angle +=that.step;
+                  that.drawCircle(that.angle);  
+              }
+          },20)
+      }
+    
+    
+    var S = new angleWord();
+    //S.drawCircle();
+    S.Click();
+</script>
+</html>

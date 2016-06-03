@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #eee; position: absolute; left: 50%; top: 50%; margin: -200px 0 0 -200px;}
+    </style>
+</head>
+<body>
+   <canvas width="500" height="500" id="canvas"></canvas>
+</body>
+<script>
+    (function(){
+        var Can = document.getElementById('canvas');
+        var Obj = Can.getContext('2d');
+        
+        function Drag()
+        {
+            this.arcObj = []; //画圆的个数
+            this.arcObjF(); //进来先执行把圆信息生成
+            this.drawArc(); //把圆画出来
+            this.drawEvent();
+        }
+        //生成画圆所需要的数据
+        Drag.prototype.arcObjF = function()
+        {
+            for(var i=0;i<5;i++)
+            {
+                var arcobj = {x:(i+1)*60,y:(i+1)*60,r:(i+1)*15,s:0,e:2*Math.PI};
+                this.arcObj.push(arcobj);
+            }   
+        }
+        
+        // 画布上面先画出5个圆来
+        Drag.prototype.drawArc = function()
+        {
+            //console.log(this.arcObj)
+            for(var i=0;i<this.arcObj.length;i++)
+            {
+                Obj.beginPath();
+                Obj.arc(this.arcObj[i].x,this.arcObj[i].y,this.arcObj[i].r,this.arcObj[i].s,this.arcObj[i].e)
+                Obj.fill();
+            }
+        }
+        
+        
+        //开始写拖动事件
+        Drag.prototype.drawEvent = function()
+        {
+            var that = this;
+            Can.onmousedown = function(e)
+            {
+                var mx = e.layerX;
+                var my = e.layerY;
+               
+                   Can.onmousemove = function(e)
+                   {
+                       Obj.clearRect(0,0,500,500);
+                       var mx = e.layerX;
+                       var my = e.layerY;
+                       for(var i=0;i<that.arcObj.length;i++)
+                       {
+                           var event = new Repaint(Obj,'arc',that.arcObj[i].x+','+that.arcObj[i].y+','+that.arcObj[i].r+','+that.arcObj[i].s+','+that.arcObj[i].e,function()
+                                                   {
+                               that.arcObj[i].x = mx;
+                               that.arcObj[i].y = my;
+                           });
+                           event.add(mx,my);
+                       }
+                       
+                   }
+                   Can.onmouseup = function()
+                   {
+                       Can.onmousemove = null;
+                       Can.onmouseup = null;
+                   }
+                }
+        }
+        
+        
+         var ddd = new Drag();
+        
+    })()
+    
+      
+    
+    //先写一个重绘函数
+    function Repaint(obj,type,data,callback)
+    {
+        this.obj = obj;
+        this.type = type;
+        this.data = data;
+        this.callback = callback;
+        this.Repain();
+    }
+    //重绘动作
+    Repaint.prototype.Repain = function()
+    {
+        if(this.type = 'arc'){
+            this.obj.beginPath();
+            var arr = this.data.split(',');
+            this.obj.arc(arr[0],arr[1],arr[2],arr[3],arr[4]);
+            this.obj.fill();
+        }
+    }
+    //重绘以后的事件判断是不是在当前的路径中
+    Repaint.prototype.add = function(mx,my){
+        if(this.obj.isPointInPath(mx,my))
+        {
+            this.callback();
+        }
+    }
+    
+</script>
+</html>

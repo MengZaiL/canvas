@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #999999; position: absolute; left: 50%; top: 50%; margin: -200px 0 0 -200px;}
+    </style>
+</head>
+<body>
+   <canvas width="600" height="600" id="canvas"></canvas>
+</body>
+<script>
+    
+    var can = document.getElementById('canvas');
+    var Obj = can.getContext('2d');
+    
+    
+    var scope = function()
+    {
+       //this.angle = 0;
+       //this.num =150;
+       this.arr = [];
+    }
+    scope.prototype.draw = function()
+    {
+        var that = this;
+        var T = setInterval(function(){
+            if(that.num <= 0)
+            {
+                clearInterval(T);
+            }else{
+                Obj.clearRect(0,0,600,600)
+                for(var i=0 ;i<that.arr.length;i++)
+                {
+                    Obj.save();
+                    Obj.translate(350,300);
+                    Obj.scale(that.arr[i].scales,that.arr[i].scales)
+                    Obj.rotate(that.arr[i].angle*Math.PI/180);
+                    Obj.fillStyle = that.arr[i].color;
+                    Obj.fillRect(that.arr[i].num,that.arr[i].num,30,30);    
+                    Obj.restore();
+                }
+            }
+        },60)
+    }
+    scope.prototype.creArr = function()
+    {
+        var that = this;
+        setInterval(function(){
+               var rect={angle:0,num:150,scales:1,color:"rgb("+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+","+parseInt(Math.random()*255)+")"};
+        that.arr.push(rect); 
+        },1000)  
+    }
+    
+    scope.prototype.xgsx = function(){
+        var that = this;
+        setInterval(function(){
+            for(var i=0; i< that.arr.length;i++)
+            {
+                if(that.arr[i].num<=0)
+                {
+                    that.arr.splice(i,1);
+                    continue;
+                }
+                that.arr[i].angle += 2;
+                that.arr[i].num -= 0.5;
+                that.arr[i].scales -= 0.002;
+                if(that.arr[i].scales<=0.1)
+                {
+                    that.arr[i].scales = 0.2;
+                }
+            }
+        },60)
+      
+    }
+    
+    var S = new scope();
+    S.draw();
+    S.xgsx();
+    S.creArr();
+</script>
+</html>

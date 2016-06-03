@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas{ background: #999999; position: absolute; left: 50%; top: 50%; margin: -200px 0 0 -200px;}
+    </style>
+</head>
+<body>
+   <canvas width="400" height="400" id="canvas"></canvas>
+</body>
+<script>
+    
+    var can = document.getElementById('canvas');
+    //var Obj = can.getContext('2d');
+   
+    var Obj = function()
+    {
+        this._that = can.getContext('2d');
+        this.cirX = 200;
+        this.cirY = 200;
+        this.radius = 100;
+    }
+    
+    Obj.prototype.init = function()
+    {
+        var that = this;
+        this.circle();
+        this.drawMark();
+        setInterval(function(){
+            that.circle();
+            that.drawMark();
+        },1000)
+    }
+    Obj.prototype.circle = function()
+    {
+        /*var cirX = 200;
+        var cirY = 200;
+        var radius = 100;*/
+        this._that.clearRect(0,0,400,400);
+        this._that.shadowColor = '#888';
+        this._that.shadowOffsetX = 2;
+        this._that.shadowOffsetY = 2;
+        this._that.shadowBlur =2;
+        
+        //渐变色
+        var Cor = this._that.createRadialGradient(this.cirX,this.cirY,1,this.cirX,this.cirY,100);
+        Cor.addColorStop(0,'#efefef');
+        Cor.addColorStop(0.5,'#cecece');
+        Cor.addColorStop(1,'#ababab');
+        this._that.fillStyle = Cor;
+        //this._that.strokeStyle = Cor;
+        this._that.lineWidth = 8;
+        this._that.beginPath();
+        this._that.arc(this.cirX,this.cirY,this.radius,0,2*Math.PI);
+        this._that.stroke()
+        this._that.fill();
+        
+        
+        //获取下时间并赋值
+        var date = new Date();
+        var ma = date.getMinutes()*6-90;
+        var ha = date.getHours()*30-90+(date.getMinutes()/2);
+        var sa = date.getSeconds()*6-90;
+        //ha = ha+(ma/60);
+        //画分针
+        
+        drawpointer(this._that,this.cirX,this.cirY,70,sa,2,"#000");
+        drawpointer(this._that,this.cirX,this.cirY,50,ma,3,"#888");
+        drawpointer(this._that,this.cirX,this.cirY,30,ha,4,"#ff0000");
+        
+        //画小圆
+         this._that.shadowColor = '#888';
+         this._that.shadowOffsetX = 1;
+         this._that.shadowOffsetY = 1;
+         this._that.shadowBlur =2;
+         this._that.fillStyle ="aaa";
+         this._that.beginPath();
+         this._that.arc(this.cirX,this.cirY,4,0,2*Math.PI);
+         this._that.fill();
+        
+    }
+    
+    Obj.prototype.drawMark = function()
+    {
+        this._that.shadowColor = '#888';
+        this._that.shadowOffsetX = 0;
+        this._that.shadowOffsetY = 0;
+        this._that.shadowBlur =0;
+        
+        
+        
+        
+         for(var i=0;i<60;i++)
+            {
+                var angle = i*6*Math.PI/180;
+                var radius1 = this.radius-8;
+                var lw = 2;
+                if(i%5 == 0)
+                {
+                    lw =3;
+                    radius1 = this.radius-12;
+                }
+                this._that.strokeStyle = '#000';
+                this._that.lineWidth = lw;
+                this._that.beginPath();
+                this._that.moveTo(this.cirX+this.radius*Math.cos(angle),this.cirY+this.radius*Math.sin(angle));
+                this._that.lineTo(this.cirX+radius1*Math.cos(angle),this.cirY+radius1*Math.sin(angle))
+                this._that.stroke();
+            }
+    }
+    
+    var C = new Obj();
+    C.init();
+    
+      //画分针的函数
+      function drawpointer(obj,x,y,radius,angle,width,color)
+        {
+            obj.lineWidth = width;
+            obj.strokeStyle = color;
+            obj.beginPath();
+            obj.moveTo(x,y);
+            obj.lineTo(x+radius*Math.cos(angle*Math.PI/180),y+radius*Math.sin(angle*Math.PI/180));
+            obj.stroke();
+        }
+    
+</script>
+</html>

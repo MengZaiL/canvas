@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        #box{ width: 150px; height: 150px; border: 1px dashed pink; font:14px/20px 'SimSon'; text-align: center;}
+    </style>
+</head>
+<body>
+    <div id='box'>
+        请输入上传的文件
+    </div>
+</body>
+<script>
+    window.onload = function()
+    {
+        var box = document.getElementById('box');
+        box.ondragenter = function(e)
+        {
+            e.preventDefault();
+        }
+        box.ondragover = function(e)
+        {
+            box.innerHTML = '请松手'
+            e.preventDefault();
+        }
+        box.ondragleave = function(e)
+        {
+             box.innerHTML = ' 请输入上传的文件'
+             e.preventDefault();
+        }
+        box.ondrop = function(e)
+        {
+             var file = e.dataTransfer.files[0]; 
+             var formData = new FormData();
+             formData.addend('aa',file)
+             var xml = new XMLHttpRequest();
+             xml.open('post','up.php');
+             xml.send(formData);
+             e.preventDefault();
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+         video{ width: 640px; height: 360px;}
+         #play{ width: 640px; height: 40px; background-color:forestgreen; border-radius: 10px; border: 1px solid forestgreen;}
+        .play{ float: left; width: 0; height: 0; margin: 10px 0 0 20px; border-left: 16px solid #fff; border-top: 10px solid transparent; border-bottom: 10px solid transparent; cursor: pointer;}
+        .pause{
+            float: left;
+            width: 6px;
+            height: 16px;
+             margin: 12px 0 0 20px;
+            border-left: 4px solid #fff;
+            border-right: 4px solid #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <video src="images/iceage4.mp4" controls=controls>       </video>
+    <div id="play">
+        <div class="play"></div>
+    </div>
+</body>
+<script>
+var video = document.getElementsByTagName('video')[0];
+var Play = document.getElementById('play').children[0];
+    Play.onclick = function()
+    {
+        if(video.paused)
+        {
+            this.className = 'pause';
+            video.play();
+        }else{
+            this.className = 'play';
+            video.pause();
+        }
+    }
+</script>
+</html>

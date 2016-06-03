@@ -1,0 +1,115 @@
+<script>
+    /************冒泡排序*************/
+    var a=[12,3,43,11,56,90,7,66,82];
+    
+    function bubblesort(arr)  //冒泡先取大的值
+    {
+        var n = arr.length;
+        var flag =false;
+        for(var i=0;i<n-1;i++)
+        {
+            for(var j=0;j<n-1-i;j++) //这里每一次循环都会有一个最大值往右走；
+            {
+                if(arr[j]>arr[j+1])
+                {   
+                    var c = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = c;
+                    flag = true;
+                }
+            }
+            
+            if(flag)
+            {
+                flag= false;
+            }
+            else{
+                break;
+            }
+        }
+        return arr;
+    }
+    
+    console.log(bubblesort(a))
+    
+    
+    function bubblesort2(arr)  //冒泡先取小的值
+    {
+        for(var i=0;i<arr.length;i++)
+        {
+            var min=arr[i];  //从第0个开始先取出最小的值来放到最前面
+            var ind = i
+            for(var j=i+1;j<arr.length;j++)
+            {
+                if(arr[j]<min)  //从第一个开始做逐一对比 先把最小的放到最前面
+                {
+                    min = arr[j]
+                    ind = j;
+                }
+            }
+            
+            //互换位置
+            var c = arr[ind];
+            arr[ind] = arr[i];
+            arr[i] = c
+            
+        }
+        return arr;
+    }
+     console.log(bubblesort2(a))
+     
+     
+     
+     function insertSort(arr){
+        var temp=null;//定义一个临时变量保存要插入元素的值
+        for(var i=1; i<arr.length; i++){//从索引位置1开始遍历数组
+            if(arr[i]<arr[i-1]){//只有要插入的元素小于已排好序的最大元素的时候才需要进行下面的操作
+                temp=arr[i];//把要插入的元素赋给一个临时变量
+                var p=i-1;//已排好序的数组的最后一项索引为i-1
+                while(temp<arr[p] && p>=0){//如果要插入的元素小于已排好序的元素并且没有到已排好数组的开始位置
+                    arr[p+1]=arr[p];//把大于要插入元素(temp)的已排好序元素位置往后挪一位
+                    p--;//从后往前便利已经排好序的元素
+                }
+                arr[p+1]=temp;//把要插入的元素插入到已排好序的数组中,索引位置为p+1
+            }		
+        }
+        return arr;//返回已排好序的数组
+    }
+    
+     console.log(insertSort(a))
+     
+     
+     //快速排序
+     
+     function qucickSort(arr)
+     {
+         var len = arr.length;
+         if(len<=1)
+         {
+             return arr;
+         }
+         
+         var pIndex = Math.floor(len/2); //选取中间的那一项
+         var min = arr.splice(pIndex,1)   //把中间的那一项提取出来
+         
+         //创建左右两个数组Left & right;
+         var left = [];
+         var right = [];
+         for(var i=0;i<arr.length;i++)
+         {
+             if(arr[i]<min[0])
+             {
+                 left.push(arr[i])
+             }else{
+                 right.push(arr[i]);
+             }
+         }
+         
+         return qucickSort(left).concat(min,qucickSort(right));
+     }
+    
+     console.log(qucickSort(a));
+</script>
+
+<ul>
+</ul>
